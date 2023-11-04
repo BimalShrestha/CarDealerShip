@@ -17,7 +17,16 @@ public class DealerShipFileManager {
 
     public void saveDealership(Vehicle vehicle){
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/inventory.csv", true);
+
+            File file = new File("src/main/resources/inventory.csv");
+            boolean fileExists = file.exists();
+            FileWriter fileWriter = new FileWriter(file, true);
+
+
+            if (!fileExists || file.length() == 0) {
+                // Write the header line
+                fileWriter.write((String.format("%s|%s|%s\n",dealership.getName(),dealership.getAddress(),dealership.getPhone())));
+            }
             String s = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n",vehicle.getVin(),vehicle.getYear(),
                     vehicle.getMake(),vehicle.getModel(),vehicle.getVehicleType(),vehicle.getColor(),vehicle.getOdometer(),vehicle.getPrice());
             fileWriter.write(s);
@@ -44,4 +53,6 @@ public class DealerShipFileManager {
             System.out.println("Sorry file not found");
         }
     }
+
+
 }
