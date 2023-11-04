@@ -63,7 +63,9 @@ public class UserInterface {
             }
             catch (InputMismatchException exception){
                 System.out.println("Enter an integer input");
+                scanner.nextLine();
             }
+
 
         }
 
