@@ -36,10 +36,13 @@ public class DealerShipFileManager {
             System.out.println("File cannot be written");
         }
     }
+
+    //This could be static
     public void getDealership(){
         try{
             FileInputStream fis = new FileInputStream("src/main/resources/inventory.csv");
             Scanner scanner = new Scanner(fis);
+            //Right, no need to print something, the FileManager isn't responsible for that
             //System.out.println(String.format("%s|%s|%s\n",dealership.getName(),dealership.getAddress(),dealership.getPhone()));
             scanner.nextLine();
             while(scanner.hasNextLine()){

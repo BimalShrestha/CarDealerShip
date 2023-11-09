@@ -83,6 +83,7 @@ public class UserInterface {
         dfm.getDealership();
 
     }
+    //Why not use this helper method to display your vehicles?
      private void displayVehicles(ArrayList<Vehicle> inventory){
         for(Vehicle vehicle: inventory){
             System.out.println(inventory);
@@ -104,9 +105,8 @@ public class UserInterface {
              System.out.println("No vehicles of the specified price range found.");
          } else {
              System.out.println("Vehicles of the specified price range:");
-             for (Vehicle vehicle : vehicles) {
-                 System.out.println(vehicle);
-             }
+             //for example, you can use your helper like this
+             displayVehicles(vehicles);
          }
      }
      private void processGetByMakeModelRequest(){
