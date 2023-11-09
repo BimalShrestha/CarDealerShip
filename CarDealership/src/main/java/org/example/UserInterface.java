@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -52,6 +53,9 @@ public class UserInterface {
                         //remove vehicle
                         processRemoveVehicleRequest();
                         break;
+                    case 10:
+                        //purchase finance lease
+                        processPurchaseFinanceLeaseVehicle();
                     case 0:
                         System.exit(0);
                         break;
@@ -179,7 +183,7 @@ public class UserInterface {
          Vehicle vehicle = new Vehicle(newVin, newYear, newMake, newModel, newVehicleType, newColor, newOdometer, newPrice);
          dfm.dealership.addVehicle(vehicle);
          System.out.println("Vehicle has been added: "+vehicle);
-         dfm.saveDealership(vehicle);
+         dfm.saveDealership();
      }
      private void processGetByMileageRequest(){
          System.out.println("Enter you minimum odometer range");
@@ -227,8 +231,125 @@ public class UserInterface {
          }
      }
      private void processPurchaseFinanceLeaseVehicle(){
+        System.out.println("Here is the list of our vehicles ");
+        processGetAllVehiclesRequest();
+        System.out.println("Chose an option:\n1> Purchase\n2> Finance\n3> Lease\n0> Return to the main menu");
+        int userInput = scanner.nextInt();
+        switch(userInput){
+            case 1:
+                getPurchase();
+                break;
+            case 2:
+                getFinance();
+                break;
+            case 3:
+                getLease();
+                break;
+            case 0:
+                System.out.println("You are returning to the main menu");
+                return;
+            default:
+                System.out.println("Pick a correct option");
+                break;
+         }
+
+
 
      }
+     private void getPurchase(){
+        System.out.println("Enter customer name please");
+        scanner.nextLine();
+        String name = scanner.nextLine().trim();
+        System.out.println("Enter customer email address ");
+        String email = scanner.nextLine().trim();
+        System.out.println("Enter the vin number of the car to purchase");
+        int vinNumber = scanner.nextInt();
+
+         Vehicle foundVehicle = null;
+
+         for (Vehicle v : dfm.dealership.inventory) {
+             if (vinNumber == v.getVin()) {
+                 foundVehicle = v;
+                 break;
+             }
+         }
+
+         if (foundVehicle != null) {
+            SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle,false);
+             System.out.println("Your monthly payment will be:\n" + foundVehicle + "\nMonthly Payment: " + sc.getMonthlyPayment() + "$");
+             ContractDataManager.saveContract(sc);
+             dfm.dealership.removeVehicle(foundVehicle);
+         } else {
+             System.out.println("We do not have the vehicle with that VIN number.");
+         }
+         dfm.saveDealership();
+         scanner.close();
+
+     }
+     private void getFinance(){
+         System.out.println("Enter customer name please");
+         scanner.nextLine();
+         String name = scanner.nextLine().trim();
+         System.out.println("Enter customer email address ");
+         String email = scanner.nextLine().trim();
+         System.out.println("Enter the vin number of the car to Finance");
+         int vinNumber = scanner.nextInt();
+
+         Vehicle foundVehicle = null;
+
+         for (Vehicle v : dfm.dealership.inventory) {
+             if (vinNumber == v.getVin()) {
+                 foundVehicle = v;
+                 break;
+             }
+         }
+
+         if (foundVehicle != null) {
+             SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle,true);
+             System.out.println("Your monthly payment for: " + foundVehicle + "\nMonthly Payment: " + sc.getMonthlyPayment() + "$");
+             ContractDataManager.saveContract(sc);
+             dfm.dealership.removeVehicle(foundVehicle);
+         } else {
+             System.out.println("We do not have the vehicle with that VIN number.");
+         }
+         dfm.saveDealership();
+         scanner.close();
+
+     }
+    private void getLease(){
+        System.out.println("Enter Customer name please");
+        scanner.nextLine();
+        String name = scanner.nextLine().trim();
+        System.out.println("Enter Customer email address ");
+        String email = scanner.nextLine().trim();
+        System.out.println("Enter the vin number of the car to Lease");
+        int vinNumber = scanner.nextInt();
+
+        Vehicle foundVehicle = null;
+
+        for (Vehicle v : dfm.dealership.inventory) {
+            if (vinNumber == v.getVin()) {
+                foundVehicle = v;
+                break;
+            }
+        }
+
+        if (foundVehicle != null) {
+            LeaseContract lc = new LeaseContract(LocalDate.now(), name, email, foundVehicle);
+            System.out.println("Your monthly payment will be:\n" + foundVehicle + "\nMonthly Payment: " + lc.getMonthlyPayment() + "$");
+            ContractDataManager.saveContract(lc);
+            dfm.dealership.removeVehicle(foundVehicle);
+        } else {
+            System.out.println("We do not have the vehicle with that VIN number.");
+        }
+        dfm.saveDealership();
+        scanner.close();
+
+
+
+    }
+
+
      //throw new UnsupportedOperationException("This method hasn't been implemented yet.");
 
 }

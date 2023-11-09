@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DealerShipFileManager {
@@ -15,21 +16,23 @@ public class DealerShipFileManager {
         }
     }*/
 
-    public void saveDealership(Vehicle vehicle){
+    public void saveDealership(){
         try {
 
             File file = new File("src/main/resources/inventory.csv");
             boolean fileExists = file.exists();
-            FileWriter fileWriter = new FileWriter(file, true);
+            FileWriter fileWriter = new FileWriter(file);
 
 
             if (!fileExists || file.length() == 0) {
                 // Write the header line
                 fileWriter.write((String.format("%s|%s|%s\n",dealership.getName(),dealership.getAddress(),dealership.getPhone())));
             }
-            String s = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n",vehicle.getVin(),vehicle.getYear(),
-                    vehicle.getMake(),vehicle.getModel(),vehicle.getVehicleType(),vehicle.getColor(),vehicle.getOdometer(),vehicle.getPrice());
-            fileWriter.write(s);
+            for(Vehicle vehicle: dealership.inventory) {
+                String s = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n", vehicle.getVin(), vehicle.getYear(),
+                        vehicle.getMake(), vehicle.getModel(), vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
+                fileWriter.write(s);
+            }
             fileWriter.close();
         }
         catch (IOException exception){

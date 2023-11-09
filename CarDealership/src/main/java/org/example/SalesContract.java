@@ -1,8 +1,10 @@
 package org.example;
 
+import java.time.LocalDate;
+
 public class SalesContract extends Contract{
     private boolean isFinanced;
-    public SalesContract(String dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
+    public SalesContract(LocalDate dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
         super(dateOfContract, customerName, customerEmail, vehicleSold);
         this.isFinanced = isFinanced;
     }

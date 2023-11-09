@@ -1,7 +1,8 @@
 package org.example;
+import java.time.LocalDate;
 
 public class LeaseContract extends Contract{
-    public LeaseContract(String dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold) {
+    public LeaseContract(LocalDate dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold) {
         super(dateOfContract, customerName, customerEmail, vehicleSold);
     }
     public double getExpectedEndingValue(){

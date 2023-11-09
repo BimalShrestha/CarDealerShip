@@ -1,25 +1,27 @@
 package org.example;
 
+import java.time.LocalDate;
+
 public abstract class Contract {
-    private String dateOfContract;
+    private LocalDate dateOfContract;
     private String customerName;
     private String customerEmail;
     private Vehicle vehicleSold;
     private double totalPrice;
     private double monthlyPayment;
 
-    public Contract(String dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold) {
+    public Contract(LocalDate dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.dateOfContract = dateOfContract;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;
     }
 
-    public String getDateOfContract() {
+    public LocalDate getDateOfContract() {
         return dateOfContract;
     }
 
-    public void setDateOfContract(String dateOfContract) {
+    public void setDateOfContract(LocalDate dateOfContract) {
         this.dateOfContract = dateOfContract;
     }
 

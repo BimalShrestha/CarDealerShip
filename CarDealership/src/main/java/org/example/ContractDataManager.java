@@ -4,14 +4,16 @@ import java.io.*;
 import java.util.Scanner;
 
 public class ContractDataManager {
+    private ContractDataManager(){
 
+    }
     public static void saveContract(Contract contract){
 
         try{
             File file = new File("src/main/resources/contract.csv");
             FileWriter fileWriter = new FileWriter(file,true);
             if (contract instanceof SalesContract) {
-                String s = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f"
+                String s = String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f\n"
                         , contract.getDateOfContract(), contract.getCustomerName(), contract.getCustomerEmail()
                         , contract.getVehicleSold().getVin(), contract.getVehicleSold().getYear(),
                         contract.getVehicleSold().getMake(), contract.getVehicleSold().getModel(),
@@ -23,7 +25,7 @@ public class ContractDataManager {
                 fileWriter.write(s);
             }
                 else{
-                    String s = String.format("LEASE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f"
+                    String s = String.format("LEASE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f\n"
                             ,contract.getDateOfContract(),contract.getCustomerName(),contract.getCustomerEmail()
                             ,contract.getVehicleSold().getVin(),contract.getVehicleSold().getYear(),
                             contract.getVehicleSold().getMake(),contract.getVehicleSold().getModel(),
