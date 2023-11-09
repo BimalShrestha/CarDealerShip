@@ -75,7 +75,8 @@ public class UserInterface {
         System.out.println("Welcome to Buck and Bear's car dealership");
         System.out.println("Chose the following options");
         System.out.println("1> By Price\n2> By MakeModel\n3> By Year\n4> By Color\n5> By Mileage\n" +
-                "6> By Vehicle Type\n7> Show All Vehicles\n8> Add Vehicle\n9> Remove Vehicle\n0> Exit");
+                "6> By Vehicle Type\n7> Show All Vehicles\n8> Add Vehicle\n" +
+                "9> Remove Vehicle\n10>Purchase Finance or lease Vehicle\n0> Exit");
 
     }
     private void init(){
@@ -224,6 +225,9 @@ public class UserInterface {
                  break;
              }
          }
+     }
+     private void processPurchaseFinanceLeaseVehicle(){
+
      }
      //throw new UnsupportedOperationException("This method hasn't been implemented yet.");
 
