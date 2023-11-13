@@ -6,17 +6,13 @@ import java.util.Scanner;
 
 public class DealerShipFileManager {
 
-    Dealership dealership = new Dealership("Buck and Bear's Dealership","111 bark lane","bear-food-1111");
-    /*private void writeDealershipInfo() {
-        try (FileWriter fileWriter = new FileWriter("src/main/resources/inventory.csv", true)) {
-            String dealershipInfo = String.format("%s|%s|%s\n", dealership.getName(), dealership.getAddress(), dealership.getPhone());
-            fileWriter.write(dealershipInfo);
-        } catch (IOException exception) {
-            System.out.println("File cannot be written");
-        }
-    }*/
+    public static Dealership dealership = new Dealership("Buck and Bear's Dealership","111 bark lane","bear-food-1111");
 
-    public void saveDealership(){
+    private DealerShipFileManager(){
+
+    }
+
+    public static Dealership saveDealership(Dealership dealership){
         try {
 
             File file = new File("src/main/resources/inventory.csv");
@@ -38,18 +34,18 @@ public class DealerShipFileManager {
         catch (IOException exception){
             System.out.println("File cannot be written");
         }
+        return dealership;
     }
-    public void getDealership(){
+    public static void getDealership(){
         try{
             FileInputStream fis = new FileInputStream("src/main/resources/inventory.csv");
             Scanner scanner = new Scanner(fis);
-            //System.out.println(String.format("%s|%s|%s\n",dealership.getName(),dealership.getAddress(),dealership.getPhone()));
             scanner.nextLine();
             while(scanner.hasNextLine()){
                 String input = scanner.nextLine();
                 String [] rowArray = input.split("\\|");
                 Vehicle vehicle = new Vehicle(Integer.parseInt(rowArray[0]),Integer.parseInt(rowArray[1]),rowArray[2],rowArray[3],rowArray[4],rowArray[5],Integer.parseInt(rowArray[6]),Double.parseDouble(rowArray[7]));
-                dealership.inventory.add(vehicle);
+                dealership.addVehicle(vehicle);
             }
         }
         catch(FileNotFoundException exception){

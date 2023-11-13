@@ -25,7 +25,7 @@ public class ContractDataManager {
                 fileWriter.write(s);
             }
                 else{
-                    String s = String.format("LEASE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f\n"
+                    String s = String.format("LEASE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%."
                             ,contract.getDateOfContract(),contract.getCustomerName(),contract.getCustomerEmail()
                             ,contract.getVehicleSold().getVin(),contract.getVehicleSold().getYear(),
                             contract.getVehicleSold().getMake(),contract.getVehicleSold().getModel(),

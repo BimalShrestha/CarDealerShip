@@ -3,11 +3,11 @@ package org.example;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
     Scanner scanner = new Scanner(System.in);
-    DealerShipFileManager dfm = new DealerShipFileManager();
 
     public void display(){
         init();
@@ -86,18 +86,18 @@ public class UserInterface {
     }
     private void init(){
 
-        dfm.getDealership();
+        DealerShipFileManager.getDealership();
 
     }
-     private void displayVehicles(ArrayList<Vehicle> inventory){
-        for(Vehicle vehicle: inventory){
-            System.out.println(inventory);
+     private void displayVehicles(ArrayList<Vehicle> vehicles){
+        for(Vehicle vehicle: vehicles){
+            System.out.println(vehicles);
         }
 
      }
      public void processGetAllVehiclesRequest(){
 
-        dfm.dealership.getAllVehicles(dfm.dealership.inventory);
+        DealerShipFileManager.dealership.getAllVehicles(DealerShipFileManager.dealership.inventory);
 
      }
      private void processGetByPriceRequest() {
@@ -107,15 +107,13 @@ public class UserInterface {
                  int min = scanner.nextInt();
                  System.out.println("Enter your maximum price range");
                  int max = scanner.nextInt();
-                 ArrayList<Vehicle> vehicles = dfm.dealership.getVehiclesByPrice(min, max);
+                 ArrayList<Vehicle> vehicles = DealerShipFileManager.dealership.getVehiclesByPrice(min, max);
                  if (vehicles.isEmpty()) {
                      System.out.println("No vehicles of the specified price range found.");
                      return;
                  } else {
                      System.out.println("Vehicles of the specified price range:");
-                     for (Vehicle vehicle : vehicles) {
-                         System.out.println(vehicle);
-                     }
+                     displayVehicles(vehicles);
                      break;
                  }
          }
@@ -133,14 +131,12 @@ public class UserInterface {
 
             System.out.println("Enter the model of the vehicle");
             String model = scanner.nextLine();
-            ArrayList<Vehicle> vehicles = dfm.dealership.getVehiclesByMakeModel(make, model);
+            ArrayList<Vehicle> vehicles = DealerShipFileManager.dealership.getVehiclesByMakeModel(make, model);
             if (vehicles.isEmpty()) {
                 System.out.println("No vehicles of the specified make and model found.");
             } else {
                 System.out.println("Vehicles of the specified make and model:");
-                for (Vehicle vehicle : vehicles) {
-                    System.out.println(vehicle);
-                }
+                displayVehicles(vehicles);
             }
         }
         catch (Exception exception){
@@ -154,15 +150,13 @@ public class UserInterface {
                 int minYear = scanner.nextInt();
                 System.out.println("Enter your maximum year");
                 int maxYear = scanner.nextInt();
-                ArrayList<Vehicle> vehicles = dfm.dealership.getVehiclesByYear(minYear, maxYear);
+                ArrayList<Vehicle> vehicles = DealerShipFileManager.dealership.getVehiclesByYear(minYear, maxYear);
                 if (vehicles.isEmpty()) {
                     System.out.println("No vehicles of the specified year range found.");
                     return;
                 } else {
                     System.out.println("Vehicles of the specified year range:");
-                    for (Vehicle vehicle : vehicles) {
-                        System.out.println(vehicle);
-                    }
+                    displayVehicles(vehicles);
                     break;
                 }
             } catch (InputMismatchException exception) {
@@ -177,14 +171,12 @@ public class UserInterface {
             scanner.nextLine();
             String color = scanner.nextLine();
 
-            ArrayList<Vehicle> vehicles = dfm.dealership.getVehiclesByColor(color);
+            ArrayList<Vehicle> vehicles = DealerShipFileManager.dealership.getVehiclesByColor(color);
             if (vehicles.isEmpty()) {
                 System.out.println("No vehicles of the specified color found.");
             } else {
                 System.out.println("Vehicles of the specified color:");
-                for (Vehicle vehicle : vehicles) {
-                    System.out.println(vehicle);
-                }
+               displayVehicles(vehicles);
             }
         }
         catch (InputMismatchException exception){
@@ -213,9 +205,9 @@ public class UserInterface {
                 System.out.println("Enter the price of the vehicle");
                 double newPrice = scanner.nextDouble();
                 Vehicle vehicle = new Vehicle(newVin, newYear, newMake, newModel, newVehicleType, newColor, newOdometer, newPrice);
-                dfm.dealership.addVehicle(vehicle);
+                DealerShipFileManager.dealership.addVehicle(vehicle);
                 System.out.println("Vehicle has been added: " + vehicle);
-                dfm.saveDealership();
+                DealerShipFileManager.saveDealership(DealerShipFileManager.dealership);
                 break;
             }
             catch (InputMismatchException exception) {
@@ -231,15 +223,13 @@ public class UserInterface {
                 int minOdometer = scanner.nextInt();
                 System.out.println("Enter your maximum odometer range");
                 int maxOdometer = scanner.nextInt();
-                ArrayList<Vehicle> vehicles = dfm.dealership.getVehiclesByMileage(minOdometer, maxOdometer);
+                ArrayList<Vehicle> vehicles = DealerShipFileManager.dealership.getVehiclesByMileage(minOdometer, maxOdometer);
                 if (vehicles.isEmpty()) {
                     System.out.println("No vehicles of the specified range found.");
                     return;
                 } else {
                     System.out.println("Vehicles of the specified mileage range:");
-                    for (Vehicle vehicle : vehicles) {
-                        System.out.println(vehicle);
-                    }
+                    displayVehicles(vehicles);
                     break;
                 }
             } catch (InputMismatchException exception) {
@@ -254,36 +244,35 @@ public class UserInterface {
             scanner.nextLine();
             String vehicleType = scanner.nextLine();
 
-            ArrayList<Vehicle> vehicles = dfm.dealership.getVehiclesByType(vehicleType);
+            ArrayList<Vehicle> vehicles = DealerShipFileManager.dealership.getVehiclesByType(vehicleType);
 
             if (vehicles.isEmpty()) {
                 System.out.println("No vehicles of the specified type found.");
             } else {
                 System.out.println("Vehicles of the specified type:");
-                for (Vehicle vehicle : vehicles) {
-                    System.out.println(vehicle);
-                }
+                displayVehicles(vehicles);
             }
         }
         catch (InputMismatchException exception){
             System.out.println("Enter the correct Input");
         }
      }
+
      private void processRemoveVehicleRequest() {
          while (true) {
              try {
                  System.out.println("Enter the vin of the vehicle you want to remove");
                  int vinUserInput = scanner.nextInt();
                  Vehicle foundVehicle = null;
-                 for (Vehicle v : dfm.dealership.inventory) {
+                 for (Vehicle v : DealerShipFileManager.dealership.inventory) {
                      if (vinUserInput == v.getVin()) {
                          foundVehicle = v;
                      }
                  }
                  if (foundVehicle != null) {
                      System.out.println("Vehicle removed: "+foundVehicle);
-                     dfm.dealership.removeVehicle(foundVehicle);
-                     dfm.saveDealership();
+                     DealerShipFileManager.dealership.removeVehicle(foundVehicle);
+                     DealerShipFileManager.saveDealership(DealerShipFileManager.dealership);
                      break;
                  } else {
                      System.out.println("We do not have the vehicle with that vin number");
@@ -296,6 +285,7 @@ public class UserInterface {
                  }
          }
      }
+
      private void processPurchaseFinanceLeaseVehicle(){
         System.out.println("Here is the list of our vehicles ");
         processGetAllVehiclesRequest();
@@ -339,10 +329,11 @@ public class UserInterface {
                 String email = scanner.nextLine().trim();
                 System.out.println("Enter the vin number of the car to purchase");
                 int vinNumber = scanner.nextInt();
+                scanner.nextLine();
 
                 Vehicle foundVehicle = null;
 
-                for (Vehicle v : dfm.dealership.inventory) {
+                for (Vehicle v : DealerShipFileManager.dealership.inventory) {
                     if (vinNumber == v.getVin()) {
                         foundVehicle = v;
                     }
@@ -350,17 +341,18 @@ public class UserInterface {
                 while(true) {
                     try {
                         if (foundVehicle != null) {
-                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna purchase it:\n1> yes\n2> no");
+                            SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle, false);
+                            System.out.println("Your Total payment will be:\n" + foundVehicle + "\nTotal Payment: " + sc.getTotalPrice() + "$");
+                            System.out.println("Final confirmation do you still wanna purchase it:\n1> yes\n2> no");
                             int userInput = scanner.nextInt();
 
                             switch (userInput) {
 
                                 case 1:
-                                    SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle, false);
-                                    System.out.println("Your monthly payment will be:\n" + foundVehicle + "\nMonthly Payment: " + sc.getTotalPrice() + "$");
+                                    System.out.println("Vehicle Purchased. Thank you for your business.");
                                     ContractDataManager.saveContract(sc);
-                                    dfm.dealership.removeVehicle(foundVehicle);
-                                    dfm.saveDealership();
+                                    DealerShipFileManager.dealership.removeVehicle(foundVehicle);
+                                    DealerShipFileManager.saveDealership(DealerShipFileManager.dealership);
 
                                     return;
                                 case 2:
@@ -399,7 +391,7 @@ public class UserInterface {
 
                 Vehicle foundVehicle = null;
 
-                for (Vehicle v : dfm.dealership.inventory) {
+                for (Vehicle v : DealerShipFileManager.dealership.inventory) {
                     if (vinNumber == v.getVin()) {
                         foundVehicle = v;
                         break;
@@ -408,16 +400,17 @@ public class UserInterface {
                 while (true) {
                     try {
                         if (foundVehicle != null) {
-                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna Finance it:\n1> yes\n2> no");
+                            SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle, true);
+                            System.out.println("Your monthly payment for: " + foundVehicle + "\nMonthly Payment: " + sc.getMonthlyPayment() + "$");
+                            System.out.println("Final confirmation do you still wanna Finance it:\n1> yes\n2> no");
                             int userInput = scanner.nextInt();
                             switch (userInput) {
 
                                 case 1:
-                                    SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle, true);
-                                    System.out.println("Your monthly payment for: " + foundVehicle + "\nMonthly Payment: " + sc.getMonthlyPayment() + "$");
+                                    System.out.println("Vehicle financed. Thank you for your business.");
                                     ContractDataManager.saveContract(sc);
-                                    dfm.dealership.removeVehicle(foundVehicle);
-                                    dfm.saveDealership();
+                                    DealerShipFileManager.dealership.removeVehicle(foundVehicle);
+                                    DealerShipFileManager.saveDealership(DealerShipFileManager.dealership);
                                     return;
                                 case 2:
                                     System.out.println("Your are returning to the purchase/lease/finance menu");
@@ -455,7 +448,7 @@ public class UserInterface {
 
                 Vehicle foundVehicle = null;
 
-                for (Vehicle v : dfm.dealership.inventory) {
+                for (Vehicle v : DealerShipFileManager.dealership.inventory) {
                     if (vinNumber == v.getVin()) {
                         foundVehicle = v;
                         break;
@@ -464,17 +457,18 @@ public class UserInterface {
                 while (true) {
                     try {
                         if (foundVehicle != null) {
-                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna lease it:\n1> yes\n2> no");
+                            LeaseContract lc = new LeaseContract(LocalDate.now(), name, email, foundVehicle);
+                            System.out.println("Your monthly payment will be:\n" + foundVehicle + "\nMonthly Payment: " + lc.getMonthlyPayment() + "$");
+                            System.out.println("Final confirmation do you still wanna lease it:\n1> yes\n2> no");
                             int userInput = scanner.nextInt();
                             switch (userInput) {
 
                                 case 1:
+                                    System.out.println("Vehicle leased. Thank you for your business.");
 
-                                    LeaseContract lc = new LeaseContract(LocalDate.now(), name, email, foundVehicle);
-                                    System.out.println("Your monthly payment will be:\n" + foundVehicle + "\nMonthly Payment: " + lc.getMonthlyPayment() + "$");
                                     ContractDataManager.saveContract(lc);
-                                    dfm.dealership.removeVehicle(foundVehicle);
-                                    dfm.saveDealership();
+                                    DealerShipFileManager.dealership.removeVehicle(foundVehicle);
+                                    DealerShipFileManager.saveDealership(DealerShipFileManager.dealership);
                                     return;
                                 case 2:
                                     System.out.println("Your are returning to the purchase/finance/lease menu");
